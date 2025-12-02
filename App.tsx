@@ -66,11 +66,22 @@ const App: React.FC = () => {
           <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
             <h3 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">Deployment Checklist:</h3>
             <ul className="text-sm text-yellow-700 dark:text-yellow-300 list-disc pl-5 space-y-1">
-              <li>Ensure environment variables are set in your deployment platform</li>
-              <li>Verify Firebase project configuration</li>
-              <li>Check Firestore database is created</li>
-              <li>Confirm Firebase Authentication is enabled</li>
+              <li><strong>Ensure environment variables are set in your deployment platform</strong> - This is likely the issue</li>
+              <li>Verify Firebase project configuration in Firebase Console</li>
+              <li>Check that Firestore database is created</li>
+              <li>Confirm Firebase Authentication is enabled with Email/Password provider</li>
             </ul>
+            <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-sm">
+              <p className="font-medium text-blue-800 dark:text-blue-200 mb-1">Environment Variables Needed:</p>
+              <ul className="list-disc pl-5 text-blue-700 dark:text-blue-300">
+                <li>VITE_FIREBASE_API_KEY</li>
+                <li>VITE_FIREBASE_AUTH_DOMAIN</li>
+                <li>VITE_FIREBASE_PROJECT_ID</li>
+                <li>VITE_FIREBASE_STORAGE_BUCKET</li>
+                <li>VITE_FIREBASE_MESSAGING_SENDER_ID</li>
+                <li>VITE_FIREBASE_APP_ID</li>
+              </ul>
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             <button 

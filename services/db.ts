@@ -25,6 +25,15 @@ const ACCOUNTS_COLLECTION = 'social_accounts';
 // --- Auth Services ---
 
 export const onAuthChange = (callback: (user: User | null) => void) => {
+  // Check if auth is initialized
+  if (!auth) {
+    console.error('Authentication service not available. Firebase may not be properly configured.');
+    // Call callback with null to indicate no user
+    callback(null);
+    // Return a noop unsubscribe function
+    return () => {};
+  }
+  
   return onAuthStateChanged(auth, (firebaseUser) => {
     if (firebaseUser) {
       callback({
@@ -86,7 +95,8 @@ export const register = async (email: string, password: string, name?: string): 
 export const logout = async (): Promise<void> => {
   // Check if auth is initialized
   if (!auth) {
-    throw new Error('Authentication service not available. Please check your Firebase configuration. Ensure all environment variables (VITE_FIREBASE_API_KEY, etc.) are properly set in your deployment platform.');
+    console.error('Authentication service not available. Please check your Firebase configuration. Ensure all environment variables (VITE_FIREBASE_API_KEY, etc.) are properly set in your deployment platform.');
+    return;
   }
   
   await signOut(auth);
