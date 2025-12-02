@@ -82,6 +82,13 @@ const App: React.FC = () => {
                 <li>VITE_FIREBASE_APP_ID</li>
               </ul>
             </div>
+            <div className="mt-3 p-2 bg-red-50 dark:bg-red-900/20 rounded text-sm">
+              <p className="font-medium text-red-800 dark:text-red-200 mb-1">Important:</p>
+              <p className="text-red-700 dark:text-red-300">
+                Environment variables set in your local <code>.env</code> file are <strong>not</strong> automatically available in deployed applications. 
+                You must set these variables in your deployment platform's dashboard.
+              </p>
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-2">
             <button 
@@ -108,9 +115,5 @@ const App: React.FC = () => {
     <AuthForm onSuccess={() => {}} /> 
   );
 };
-
-// Note: onSuccess in AuthForm is now optional or handled by the auth listener, 
-// but we pass an empty fn or refactor AuthForm to not rely solely on it for state.
-// The listener in App.tsx will catch the login event.
 
 export default App;
