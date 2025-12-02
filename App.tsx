@@ -23,7 +23,7 @@ const App: React.FC = () => {
       const timeout = setTimeout(() => {
         if (!hasAttemptedAuth.current) {
           setInitializing(false);
-          setError('Unable to connect to authentication service. Please check your internet connection and Firebase configuration.');
+          setError('Unable to connect to authentication service. Please check your internet connection and Firebase configuration. Ensure environment variables are set in your deployment platform.');
         }
       }, 5000);
 
@@ -35,7 +35,7 @@ const App: React.FC = () => {
     } catch (err: any) {
       console.error('Firebase initialization error:', err);
       setInitializing(false);
-      setError('Failed to initialize authentication service. Please check your Firebase configuration.');
+      setError(`Failed to initialize authentication service: ${err.message}. Please check your Firebase configuration and ensure all environment variables are properly set in your deployment platform.`);
     }
   }, []);
 
@@ -63,12 +63,29 @@ const App: React.FC = () => {
         <div className="max-w-md w-full bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-800">
           <h2 className="text-xl font-bold text-red-600 dark:text-red-400 mb-4">Application Error</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Reload Application
-          </button>
+          <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
+            <h3 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">Deployment Checklist:</h3>
+            <ul className="text-sm text-yellow-700 dark:text-yellow-300 list-disc pl-5 space-y-1">
+              <li>Ensure environment variables are set in your deployment platform</li>
+              <li>Verify Firebase project configuration</li>
+              <li>Check Firestore database is created</li>
+              <li>Confirm Firebase Authentication is enabled</li>
+            </ul>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex-1"
+            >
+              Reload Application
+            </button>
+            <button 
+              onClick={() => window.open('https://console.firebase.google.com/', '_blank')} 
+              className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors flex-1"
+            >
+              Firebase Console
+            </button>
+          </div>
         </div>
       </div>
     );

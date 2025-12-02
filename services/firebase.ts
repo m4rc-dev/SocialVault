@@ -18,6 +18,11 @@ const firebaseConfig = {
 let app, auth, db, analytics;
 
 try {
+  // Check if we have a valid API key
+  if (!import.meta.env.VITE_FIREBASE_API_KEY) {
+    throw new Error('Missing Firebase API key. Please check your environment variables.');
+  }
+  
   // Initialize Firebase
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
