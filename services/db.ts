@@ -39,6 +39,11 @@ export const onAuthChange = (callback: (user: User | null) => void) => {
 };
 
 export const login = async (email: string, password: string): Promise<ApiResponse<User>> => {
+  // Check if auth is initialized
+  if (!auth) {
+    return { success: false, error: 'Authentication service not available. Please check your Firebase configuration.' };
+  }
+  
   try {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     return { 
@@ -55,6 +60,11 @@ export const login = async (email: string, password: string): Promise<ApiRespons
 };
 
 export const register = async (email: string, password: string, name?: string): Promise<ApiResponse<User>> => {
+  // Check if auth is initialized
+  if (!auth) {
+    return { success: false, error: 'Authentication service not available. Please check your Firebase configuration.' };
+  }
+  
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     if (name) {
@@ -74,12 +84,23 @@ export const register = async (email: string, password: string, name?: string): 
 };
 
 export const logout = async (): Promise<void> => {
+  // Check if auth is initialized
+  if (!auth) {
+    throw new Error('Authentication service not available. Please check your Firebase configuration.');
+  }
+  
   await signOut(auth);
 };
 
 // --- Data Services ---
 
 export const getAccounts = async (userId: string): Promise<SocialAccount[]> => {
+  // Check if db is initialized
+  if (!db) {
+    console.error('Database service not available. Please check your Firebase configuration.');
+    return [];
+  }
+  
   try {
     console.log('Fetching accounts for user:', userId);
     const q = query(
@@ -102,6 +123,11 @@ export const getAccounts = async (userId: string): Promise<SocialAccount[]> => {
 };
 
 export const createAccount = async (account: Omit<SocialAccount, 'id' | 'createdAt'>): Promise<SocialAccount> => {
+  // Check if db is initialized
+  if (!db) {
+    throw new Error('Database service not available. Please check your Firebase configuration.');
+  }
+  
   const newAccountData = {
     ...account,
     createdAt: Date.now(),
@@ -119,6 +145,11 @@ export const createAccount = async (account: Omit<SocialAccount, 'id' | 'created
 };
 
 export const updateAccount = async (id: string, updates: Partial<SocialAccount>): Promise<SocialAccount> => {
+  // Check if db is initialized
+  if (!db) {
+    throw new Error('Database service not available. Please check your Firebase configuration.');
+  }
+  
   const docRef = doc(db, ACCOUNTS_COLLECTION, id);
   // Remove id from updates if present to avoid overwriting document key with field
   const { id: _, ...safeUpdates } = updates;
@@ -127,6 +158,11 @@ export const updateAccount = async (id: string, updates: Partial<SocialAccount>)
 };
 
 export const deleteAccount = async (id: string): Promise<void> => {
+  // Check if db is initialized
+  if (!db) {
+    throw new Error('Database service not available. Please check your Firebase configuration.');
+  }
+  
   await deleteDoc(doc(db, ACCOUNTS_COLLECTION, id));
 };
 

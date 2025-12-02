@@ -14,8 +14,22 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+// Initialize Firebase with error handling
+let app, auth, db, analytics;
+
+try {
+  // Initialize Firebase
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
+} catch (error) {
+  console.error('Firebase initialization error:', error);
+  // Provide fallback objects to prevent app crashes
+  app = null;
+  auth = null;
+  db = null;
+  analytics = null;
+}
+
+export { auth, db, analytics };

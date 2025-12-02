@@ -32,8 +32,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onSuccess }) => {
       if (!res.success) {
         setError(res.error || 'Authentication failed');
       }
-    } catch (err) {
-      setError('An unexpected error occurred');
+    } catch (err: any) {
+      console.error('Authentication error:', err);
+      setError(err.message || 'An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }

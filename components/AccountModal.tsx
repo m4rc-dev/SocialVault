@@ -67,7 +67,13 @@ export const AccountModal: React.FC<AccountModalProps> = ({ isOpen, onClose, onS
     } catch (error: any) {
       console.error('Error submitting account:', error);
       console.error('Error details:', error.message || error.code || error);
-      alert(`Failed to save account: ${error.message || error.code || 'Unknown error'}. Please try again.`);
+      const errorMessage = error.message || error.code || 'Unknown error';
+      alert(`Failed to save account: ${errorMessage}. Please try again.`);
+      
+      // If it's a Firebase error, suggest checking the configuration
+      if (errorMessage.includes('service not available') || errorMessage.includes('permission') || errorMessage.includes('Missing or insufficient permissions')) {
+        alert('Please check your Firebase configuration and security rules at https://console.firebase.google.com/');
+      }
     } finally {
       setIsSubmitting(false);
     }

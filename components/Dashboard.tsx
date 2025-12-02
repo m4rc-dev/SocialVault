@@ -78,7 +78,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
       console.error('Error adding account:', error);
       console.error('Error details:', error.message || error.code || error);
       // Show an error message to the user
-      alert(`Failed to add account: ${error.message || error.code || 'Unknown error'}. Please try again.`);
+      const errorMessage = error.message || error.code || 'Unknown error';
+      alert(`Failed to add account: ${errorMessage}. Please try again.`);
+      
+      // If it's a Firebase error, suggest checking the configuration
+      if (errorMessage.includes('service not available') || errorMessage.includes('permission')) {
+        alert('Please check your Firebase configuration and security rules.');
+      }
     }
   };
 
